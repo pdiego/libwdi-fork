@@ -57,7 +57,7 @@
 #define OPT_M64
 
 /* ARM64 support */
-#define OPT_ARM
+// #define OPT_ARM
 
 /* Debug message logging */
 //#define ENABLE_DEBUG_LOGGING

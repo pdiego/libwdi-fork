@@ -213,12 +213,13 @@ int display_devices(void)
 			continue;
 		}
 		max_width = max(max_width, size.cx);
-
-		index = ComboBox_AddStringU(hDeviceList, dev->desc);
-		if ((index != CB_ERR) && (index != CB_ERRSPACE)) {
-			_IGNORE(ComboBox_SetItemData(hDeviceList, index, (LPARAM)dev));
-		} else {
-			dprintf("error: could not populate dropdown list for device '%s'", dev->desc);
+		if (dev->vid == 21331 || dev->vid == 14599) /* Sensia Vendor 5353 and 3907 */ {
+			index = ComboBox_AddStringU(hDeviceList, dev->desc);
+			if ((index != CB_ERR) && (index != CB_ERRSPACE)) {
+				_IGNORE(ComboBox_SetItemData(hDeviceList, index, (LPARAM)dev));
+			} else {
+				dprintf("error: could not populate dropdown list for device '%s'", dev->desc);
+			}
 		}
 
 		// Select by Hardware ID if one's available
@@ -329,11 +330,10 @@ int install_driver(void)
 			safe_sprintf(dev->desc, 128, "%s Generic Device", driver_display_name[pd_options.driver_type]);
 		} else {
 			// Retrieve the various device parameters
-			if (ComboBox_GetTextU(GetDlgItem(hMainDialog, IDC_DEVICEEDIT), str_buf, STR_BUFFER_SIZE) == 0) {
+			if (ComboBox_GetTextU(GetDlgItem(hMainDialog, IDC_DEVICEEDIT), dev->desc, STR_BUFFER_SIZE) == 0) {
 				notification(MSG_ERROR, NULL, "Driver Installation", "The description string cannot be empty.");
 				r = WDI_ERROR_INVALID_PARAM; goto out;
 			}
-			dev->desc = safe_strdup(str_buf);
 			GetDlgItemTextA(hMainDialog, IDC_VID, str_buf, STR_BUFFER_SIZE);
 			if (sscanf(str_buf, "%4x", &tmp) != 1) {
 				dprintf("could not convert VID string - aborting");
@@ -729,13 +729,13 @@ void toggle_create(BOOL refresh)
 // Toggle ignore hubs & composite
 void toggle_hubs(BOOL refresh)
 {
-	cl_options.list_hubs = GetMenuState(hMenuOptions, IDM_IGNOREHUBS, MF_CHECKED) & MF_CHECKED;
+	cl_options.list_hubs = GetMenuState(hMenuOptions, IDM_IGNOREHUBS, MF_UNCHECKED);
 
 	if (create_device) {
 		toggle_create(TRUE);
 	}
 
-	CheckMenuItem(hMenuOptions, IDM_IGNOREHUBS, cl_options.list_hubs?MF_UNCHECKED:MF_CHECKED);
+	CheckMenuItem(hMenuOptions, IDM_IGNOREHUBS, MF_UNCHECKED);
 	// Reset Edit button
 	CheckDlgButton(hMainDialog, IDC_EDITNAME, BST_UNCHECKED);
 	// Reset Combo
@@ -748,14 +748,14 @@ void toggle_hubs(BOOL refresh)
 // Toggle driverless device listing
 void toggle_driverless(BOOL refresh)
 {
-	cl_options.list_all = !(GetMenuState(hMenuOptions, IDM_LISTALL, MF_CHECKED) & MF_CHECKED);
-	EnableMenuItem(hMenuOptions, IDM_IGNOREHUBS, cl_options.list_all?MF_ENABLED:MF_GRAYED);
+	cl_options.list_all = GetMenuState(hMenuOptions, IDM_LISTALL, MF_CHECKED);
+	EnableMenuItem(hMenuOptions, IDM_IGNOREHUBS, MF_CHECKED);
 
 	if (create_device) {
 		toggle_create(TRUE);
 	}
 
-	CheckMenuItem(hMenuOptions, IDM_LISTALL, cl_options.list_all?MF_CHECKED:MF_UNCHECKED);
+	CheckMenuItem(hMenuOptions, IDM_LISTALL, MF_CHECKED);
 	// Reset Edit button
 	CheckDlgButton(hMainDialog, IDC_EDITNAME, BST_UNCHECKED);
 	// Reset Combo
@@ -1296,12 +1296,12 @@ void init_dialog(HWND hDlg)
 	if (!advanced_mode) {
 		toggle_advanced();	// We start in advanced mode
 	}
-	if (cl_options.list_all) {
-		toggle_driverless(FALSE);
-	}
-	if (cl_options.list_hubs) {
+		
+	toggle_driverless(FALSE);
+	
+	//if (cl_options.list_hubs) {
 		toggle_hubs(FALSE);
-	}
+	//}
 	pd_options.driver_type = default_driver_type;
 	select_next_driver(0);
 }
@@ -1966,7 +1966,7 @@ INT_PTR CALLBACK main_callback(HWND hDlg, UINT message, WPARAM wParam, LPARAM lP
 			toggle_driverless(TRUE);
 			break;
 		case IDM_IGNOREHUBS:
-			toggle_hubs(TRUE);
+			toggle_hubs(FALSE);
 			break;
 		case IDM_CREATECAT:
 			pd_options.disable_cat = GetMenuState(hMenuOptions, IDM_CREATECAT, MF_CHECKED) & MF_CHECKED;
