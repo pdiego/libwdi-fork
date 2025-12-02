@@ -191,10 +191,6 @@
     <Manifest Include="..\common_controls_and_elevation.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\zadig.bmp" />
-    <None Include="..\zadig.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="..\zadig.rc" />
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +198,13 @@
       <Project>{9aa0e745-1a0a-4700-8ecb-6a6de9dbf8b9}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\logoSensiaBridge.bmp" />
+    <Image Include="..\logoSensiaBridge.ico" />
+    <Image Include="..\logoSensiaBridge.png" />
+    <Image Include="..\zadig.bmp" />
+    <Image Include="..\zadig.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

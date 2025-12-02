@@ -52,14 +52,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\zadig.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\zadig.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="..\zadig.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
@@ -68,5 +60,22 @@
     <Manifest Include="..\common_controls_and_elevation.manifest">
       <Filter>Resource Files</Filter>
     </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\zadig.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\zadig.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\logoSensiaBridge.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\logoSensiaBridge.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\logoSensiaBridge.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

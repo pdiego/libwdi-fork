@@ -1,15 +1,16 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by zadig.rc
+// Archivo de inclusión generado de Microsoft Visual C++.
+// Usado por zadig.rc
 //
 #define IDI_ZADIG                       102
 #define IDI_SPLIT                       103
 #define IDD_ABOUTBOX                    104
 #define IDD_NOTIFICATION                105
-#define IDB_ZADIG                       106
+#define IDB_BITMAP1                     106
 #define IDD_LICENSE                     107
 #define IDD_UPDATE_POLICY               108
 #define IDD_NEW_VERSION                 109
+#define IDB_PNG1                        110
 #define IDC_DEVICELIST                  1001
 #define IDC_VID                         1002
 #define IDC_PID                         1003
@@ -73,7 +74,6 @@
 #define IDS_NEW_VERSION_NOTES_GRP       1093
 #define IDS_CHECK_NOW_GRP               1094
 #define IDC_PROGRESS                    1095
-
 #define IDM_ABOUT                       40001
 #define IDM_UPDATES                     40002
 #define IDM_ADVANCEDMODE                40003
@@ -99,7 +99,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        110
+#define _APS_NEXT_RESOURCE_VALUE        119
 #define _APS_NEXT_COMMAND_VALUE         40023
 #define _APS_NEXT_CONTROL_VALUE         1096
 #define _APS_NEXT_SYMED_VALUE           101

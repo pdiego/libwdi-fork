@@ -299,22 +299,21 @@ int get_driver_type(struct wdi_device_info* dev)
  */
 int install_driver(void)
 {
+	// pdiego
 	struct wdi_device_info* dev = device;
 	char str_buf[STR_BUFFER_SIZE];
 	char* inf_name = NULL;
 	BOOL need_dealloc = FALSE;
 	int tmp, r = WDI_ERROR_OTHER;
 
-	if ( (dev == NULL) && (!extract_only) && (!pd_options.use_wcid_driver)
-	  && (!(GetMenuState(hMenuDevice, IDM_CREATE, MF_CHECKED) & MF_CHECKED)) ) {
+	if ( (dev == NULL) && (!extract_only) && (!pd_options.use_wcid_driver)) {
 		return WDI_ERROR_NO_DEVICE;
 	}
 
 	installation_running = TRUE;
-	if ( (GetMenuState(hMenuDevice, IDM_CREATE, MF_CHECKED) & MF_CHECKED)
-	  || (pd_options.use_wcid_driver) ) {
+	if (pd_options.use_wcid_driver) {
 		// If the device is created from scratch, override the existing device
-		dev = (struct wdi_device_info*)calloc(1, sizeof(struct wdi_device_info));
+		// dev = (struct wdi_device_info*)calloc(1, sizeof(struct wdi_device_info));
 		if (dev == NULL) {
 			dprintf("could not create new device_info struct for installation");
 			r = WDI_ERROR_RESOURCE; goto out;
@@ -330,7 +329,7 @@ int install_driver(void)
 			safe_sprintf(dev->desc, 128, "%s Generic Device", driver_display_name[pd_options.driver_type]);
 		} else {
 			// Retrieve the various device parameters
-			if (ComboBox_GetTextU(GetDlgItem(hMainDialog, IDC_DEVICEEDIT), dev->desc, STR_BUFFER_SIZE) == 0) {
+			if (ComboBox_GetTextU(GetDlgItem(hMainDialog, IDC_DEVICEEDIT), str_buf, STR_BUFFER_SIZE) == 0) {
 				notification(MSG_ERROR, NULL, "Driver Installation", "The description string cannot be empty.");
 				r = WDI_ERROR_INVALID_PARAM; goto out;
 			}
@@ -361,8 +360,11 @@ int install_driver(void)
 	if (dev != NULL) {
 		inf_name = to_valid_filename(dev->desc, ".inf");
 		if (inf_name == NULL) {
+			/* Protegemos contra dev == NULL o dev->desc == NULL */
+			const char* desc_display = (dev && dev->desc) ? dev->desc : "<NULL>";
+			size_t desc_len = (dev) ? safe_strlen(dev->desc) : 0;
 			dsprintf("'%s' is %s for a device name",
-				dev->desc, (strlen(dev->desc)>WDI_MAX_STRLEN)?"too long":"invalid");
+				desc_display, (desc_len > WDI_MAX_STRLEN) ? "too long" : "invalid");
 			r = WDI_ERROR_INVALID_PARAM; goto out;
 		}
 		dprintf("Using inf name: %s", inf_name);
@@ -430,6 +432,8 @@ void combo_breaker(BOOL edit)
 		ShowWindow(GetDlgItem(hMainDialog, IDC_DEVICEEDIT), SW_HIDE);
 		ShowWindow(GetDlgItem(hMainDialog, IDC_DEVICELIST), SW_SHOW);
 	}
+	// pdiego quitar despues de analizar
+	ShowWindow(GetDlgItem(hMainDialog, IDC_DEVICEEDIT), SW_SHOW);
 }
 
 /*
@@ -686,7 +690,7 @@ void update_ui(void)
 // Toggle device creation mode
 void toggle_create(BOOL refresh)
 {
-	create_device = !(GetMenuState(hMenuDevice, IDM_CREATE, MF_CHECKED) & MF_CHECKED);
+	create_device = FALSE;// !(GetMenuState(hMenuDevice, IDM_CREATE, MF_CHECKED) & MF_CHECKED);
 	if (create_device) {
 		device = NULL;
 		// Disable Edit Desc. if selected
@@ -720,7 +724,7 @@ void toggle_create(BOOL refresh)
 			PostMessage(hMainDialog, UM_REFRESH_LIST, 0, 0);
 		}
 	}
-	CheckMenuItem(hMenuDevice, IDM_CREATE, create_device?MF_CHECKED:MF_UNCHECKED);
+	//CheckMenuItem(hMenuDevice, IDM_CREATE, create_device?MF_CHECKED:MF_UNCHECKED);
 	pd_options.use_wcid_driver = FALSE;
 	replace_driver = FALSE;
 	set_install_button();
@@ -1127,7 +1131,7 @@ void init_dialog(HWND hDlg)
 	long lfHeight;
 	RECT rect;
 	int i16, i24;
-	char *token, version[] = APP_VERSION;
+	char *token, version[] = "Sensia";
 
 	struct {
 		HIMAGELIST himl;
@@ -1140,7 +1144,7 @@ void init_dialog(HWND hDlg)
 	hDeviceList = GetDlgItem(hDlg, IDC_DEVICELIST);
 	hInfo = GetDlgItem(hDlg, IDC_INFO);
 	hArrow = GetDlgItem(hMainDialog, IDC_RARR);
-	hMenuDevice = GetSubMenu(GetMenu(hDlg), 0);
+	hMenuDevice = NULL;// GetSubMenu(GetMenu(hDlg), 0);
 	hMenuOptions = GetSubMenu(GetMenu(hDlg), 1);
 	hMenuLogLevel = GetSubMenu(hMenuOptions, 7);
 	hMenuSplit = GetSubMenu(LoadMenuA(main_instance, "IDR_INSTALLSPLIT"), 0);
@@ -1162,9 +1166,9 @@ void init_dialog(HWND hDlg)
 		application_version[i] = (uint16_t)atoi(token);
 
 	// Create the status line
-	create_status_bar();
+	//create_status_bar();
 	// Display the version in the right area of the status bar
-	SendMessageA(GetDlgItem(hDlg, IDC_STATUS), SB_SETTEXTA, SBT_OWNERDRAW | 1, (LPARAM)APP_VERSION);
+	//SendMessageA(GetDlgItem(hDlg, IDC_STATUS), SB_SETTEXTA, SBT_OWNERDRAW | 1, (LPARAM)APP_VERSION);
 
 	// Create various tooltips
 	create_tooltip(GetDlgItem(hMainDialog, IDC_EDITNAME),
@@ -1556,7 +1560,7 @@ INT_PTR CALLBACK main_callback(HWND hDlg, UINT message, WPARAM wParam, LPARAM lP
 				if (create_device) {
 					toggle_create(FALSE);
 				}
-				CheckMenuItem(hMenuDevice, IDM_CREATE, MF_UNCHECKED);
+				//CheckMenuItem(hMenuDevice, IDM_CREATE, MF_UNCHECKED);
 				combo_breaker(FALSE);
 				PostMessage(hMainDialog, UM_REFRESH_LIST, 0, 0);
 			}
@@ -1798,6 +1802,8 @@ INT_PTR CALLBACK main_callback(HWND hDlg, UINT message, WPARAM wParam, LPARAM lP
 							safe_sprintf(editable_desc, STR_BUFFER_SIZE, "(Unknown Device)");
 							device->desc = editable_desc;
 						}
+					} else {
+						SetDlgItemTextU(hMainDialog, IDC_DEVICEEDIT, device->desc);
 					}
 					// Display the current driver info
 					replace_driver = (device->driver != NULL);
@@ -1813,6 +1819,7 @@ INT_PTR CALLBACK main_callback(HWND hDlg, UINT message, WPARAM wParam, LPARAM lP
 						safe_strcpy(driver_text, sizeof(driver_text), "(NONE)");
 					}
 					SetDlgItemTextU(hMainDialog, IDC_DRIVER, driver_text);
+					SetDlgItemTextU(hMainDialog, IDC_DEVICEEDIT, device->desc);
 					// Display the VID,PID,MI
 					static_sprintf(str_tmp, "%04X", device->vid);
 					SetDlgItemTextA(hMainDialog, IDC_VID, str_tmp);
