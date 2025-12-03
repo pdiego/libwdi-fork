@@ -1,5 +1,5 @@
 /*
- * Zadig: Automated Driver Installer for USB devices (GUI version)
+ * Sensia: Automated Driver Installer for USB devices (GUI version)
  * Copyright (c) 2010-2025 Pete Batard <pete@akeo.ie>
  * For more info, please visit http://libwdi.akeo.ie
  *
@@ -112,8 +112,8 @@ BOOL exit_on_success = FALSE;
 enum wcid_state has_wcid = WCID_NONE;
 int wcid_type = WDI_USER;
 UINT64 target_driver_version = 0;
-EXT_DECL(log_ext, "Zadig.log", __VA_GROUP__("*.log"), __VA_GROUP__("Zadig log"));
-EXT_DECL(cfg_ext, "sample.cfg", __VA_GROUP__("*.cfg"), __VA_GROUP__("Zadig device config"));
+EXT_DECL(log_ext, "Sensia.log", __VA_GROUP__("*.log"), __VA_GROUP__("Sensia log"));
+EXT_DECL(cfg_ext, "sample.cfg", __VA_GROUP__("*.cfg"), __VA_GROUP__("Sensia device config"));
 
 /*
  * On screen logging and status
@@ -213,7 +213,7 @@ int display_devices(void)
 			continue;
 		}
 		max_width = max(max_width, size.cx);
-		if (dev->vid == 21331 || dev->vid == 14599) /* Sensia Vendor 5353 and 3907 */ {
+		if ((dev->vid == 21331 || dev->vid == 14599) && !dev->is_composite) /* Sensia Vendor 5353 and 3907 */ {
 			index = ComboBox_AddStringU(hDeviceList, dev->desc);
 			if ((index != CB_ERR) && (index != CB_ERRSPACE)) {
 				_IGNORE(ComboBox_SetItemData(hDeviceList, index, (LPARAM)dev));
@@ -1579,7 +1579,7 @@ INT_PTR CALLBACK main_callback(HWND hDlg, UINT message, WPARAM wParam, LPARAM lP
 		return (INT_PTR)TRUE;
 
 	case UM_NO_UPDATE:
-		notification(MSG_INFO, NULL, "Update check", "No new version of Zadig was found");
+		notification(MSG_INFO, NULL, "Update check", "No new version of Sensia was found");
 		break;
 
 	case WM_INITDIALOG:
@@ -2058,7 +2058,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		mutex = CreateMutexA(NULL, TRUE, "Global/" APPLICATION_NAME);
 	}
 	if ((mutex == NULL) || (GetLastError() == ERROR_ALREADY_EXISTS)) {
-		MessageBoxA(NULL, "Another Zadig application is running.\n"
+		MessageBoxA(NULL, "Another Sensia application is running.\n"
 			"Please close the first application before running another one.",
 			"Other instance detected", MB_ICONSTOP);
 		safe_closehandle(mutex);
@@ -2070,7 +2070,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// Alert users if they are running versions older than Windows 7
 	if (windows_version < WINDOWS_7) {
-		MessageBoxA(NULL, "This version of Zadig can only be run on Windows 7 or later",
+		MessageBoxA(NULL, "This version of Sensia can only be run on Windows 7 or later",
 			"Incompatible version", MB_ICONSTOP);
 		CloseHandle(mutex);
 		return 0;
@@ -2123,7 +2123,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 			continue;
 		}
-		// Alt-R => Remove all the registry keys created by Zadig
+		// Alt-R => Remove all the registry keys created by Sensia
 		if ((msg.message == WM_SYSKEYDOWN) && (msg.wParam == 'R')) {
 			dsprintf(DeleteRegistryKey(REGKEY_HKCU, COMPANY_NAME "\\" APPLICATION_NAME)?
 				"Application registry keys successfully deleted":"Failed to delete application registry keys");

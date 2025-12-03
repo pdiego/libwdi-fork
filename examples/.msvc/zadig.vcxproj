@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>zadig</ProjectName>
+    <ProjectName>zDriverSensia</ProjectName>
     <ProjectGuid>{F7F7842F-2912-454E-ADF5-0B22987946E2}</ProjectGuid>
     <RootNamespace>zadig</RootNamespace>
     <Keyword>Win32Proj</Keyword>

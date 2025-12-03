@@ -1,5 +1,5 @@
 /*
- * Zadig: Automated Driver Installer for USB devices (GUI version)
+ * Sensia: Automated Driver Installer for USB devices (GUI version)
  * Copyright (c) 2010-2025 Pete Batard <pete@akeo.ie>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,23 +33,23 @@
 #endif
 #define _IGNORE(expr)               do { (void)(expr); } while(0)
 
-#define APPLICATION_NAME            "Zadig"
-#define COMPANY_NAME                "Akeo Consulting"
-#define APPLICATION_URL             "https://zadig.akeo.ie"
+#define APPLICATION_NAME            "Sensia"
+#define COMPANY_NAME                "Sensia Solutions"
+#define APPLICATION_URL             "https://sensia-solutions.com"
 #define STR_BUFFER_SIZE             512
 #define NOTIFICATION_DELAY          1000
 #define NET_SESSION_TIMEOUT         3500
 #define MAX_TOOLTIPS                32
 #define MAX_LOG_SIZE                0x7FFFFFFE
 #define MAX_PROGRESS                (0xFFFF-1)
-#define INI_NAME                    "zadig.ini"
+#define INI_NAME                    "Sensia.ini"
 #define LIBWDI_URL                  "https://github.com/pbatard/libwdi"
 #define LIBUSB_URL                  "https://github.com/libusb/libusb/wiki/Windows"
 #define LIBUSB0_URL                 "https://sourceforge.net/p/libusb-win32/wiki/Home/"
 #define LIBUSBK_URL                 "http://libusbk.sourceforge.net/UsbK3/index.html"
 #define WINUSB_URL                  "https://docs.microsoft.com/en-us/windows-hardware/drivers/usbcon/winusb"
-#define HELP_URL                    "https://github.com/pbatard/libwdi/wiki/Zadig"
-#define WCID_URL                    "https://github.com/pbatard/libwdi/wiki/WCID-Devices"
+#define HELP_URL                    "https://github.com/"
+#define WCID_URL                    "https://github.com/"
 #define USB_IDS_URL                 "http://www.linux-usb.org/usb-ids.html"
 #define DARK_BLUE                   RGB(0,0,125)
 #define BLACK                       RGB(0,0,0)
@@ -60,7 +60,7 @@
 #define FIELD_ORANGE                RGB(255,240,200)
 #define ARROW_GREEN                 RGB(92,228,65)
 #define ARROW_ORANGE                RGB(253,143,56)
-#define APP_VERSION                 "Zadig 2.9.792"
+#define APP_VERSION                 "Sensia 1.0.0"
 
 // These are used to flag end users about the driver they are going to replace
 enum driver_type {

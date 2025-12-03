@@ -1,5 +1,5 @@
 /*
- * Zadig: Automated Driver Installer for USB devices (GUI version)
+ * Sensia: Automated Driver Installer for USB devices (GUI version)
  * Networking functionality (web file download, check for update, etc.)
  * Copyright © 2012-2024 Pete Batard <pete@akeo.ie>
  *

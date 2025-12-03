@@ -1,5 +1,5 @@
 /*
- * Zadig: Automated Driver Installer for USB devices (GUI version)
+ * Sensia: Automated Driver Installer for USB devices (GUI version)
  * Elementary Unicode compliant find/replace parser
  * Copyright © 2012-2014 Pete Batard <pete@akeo.ie>
  *
